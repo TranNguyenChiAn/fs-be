@@ -10,6 +10,6 @@ FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
 
-COPY --from=target /target/demo-1.jar demo.jar
+COPY --from=target /target/fe-be-0.0.1-SNAPSHOT.jar fe-be.jar
 
-ENTRYPOINT ["java", "-jar", "demo.jar"]
+ENTRYPOINT ["java", "-jar", "fe-be.jar"]
