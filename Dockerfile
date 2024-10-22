@@ -1,19 +1,8 @@
-    syntax=docker/dockerfile:1
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-    FROM openjdk:23-windowsservercore-ltsc2022
-
-    #working directory
-    WORKDIR /app
-
-    #copy from your Host to container
-    COPY .mvn/ .mvn
-    COPY mvnw pom.xml ./
-
-
-    #Run this inside the image
-    RUN ./mvnw  dependency:go-offline
-    COPY src ./src
-
-    #run inside container
-    CMD ["./mvnw", "spring-boot:run"]
-
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","demo.jar"]
